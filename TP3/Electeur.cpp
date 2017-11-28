@@ -20,15 +20,22 @@ Electeur::Electeur(const std::string& p_nas, const std::string& p_prenom, const 
 }
 
 std::string Electeur::reqPersonneFormate() const {
-	cout<<"Electeur"<<endl;
-	cout<<"----------------------"<<endl;
+	ostringstream sortie;
+	sortie<<"Electeur"<<endl;
+	sortie<<"----------------------------------------------"<<endl;
 	Personne::reqPersonneFormate();
 
 
 }
 
 Electeur::~Electeur() {
-	// TODO Auto-generated destructor stub
+}
+
+Personne* Electeur::clone() const {
+	return new Electeur(*this);
+}
+
+void Electeur::verifieInvariant() const {
 }
 
 } /* namespace elections */

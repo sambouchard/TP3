@@ -10,6 +10,7 @@
 #include <string>
 #include <iostream>
 #include "Personne.h"
+#include "Adresse.h"
 
 namespace elections {
 
@@ -19,9 +20,11 @@ public:
 	const util::Date& p_dateNaissance, const util::Adresse& p_adresse);
 
 	virtual std::string reqPersonneFormate() const;
+	virtual Personne* clone() const;
 	virtual ~Electeur();
 
 private:
+	void verifieInvariant() const;
 };
 
 } /* namespace elections */

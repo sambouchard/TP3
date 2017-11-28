@@ -10,6 +10,7 @@
 #include <string>
 #include <iostream>
 #include "Date.h"
+#include "Adresse.h"
 #include "ContratException.h"
 
 

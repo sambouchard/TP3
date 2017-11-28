@@ -18,7 +18,10 @@ namespace util
 {
 /**
  * \class Adresse
- * \brief modélise une adresse civique
+ * \brief Cette classe sert a la manipulation et au maintien des adresses civiques.
+ * Cette classe peut aussi afficher l'adresse d'une personne sous une forme facilement lisble par l'utilisateur
+ * 		<p>
+ * 		Attributs: m_nom nom de la rue de l'adresse
  */
 class Adresse
 {

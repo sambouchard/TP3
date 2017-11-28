@@ -10,6 +10,8 @@
 #include "Date.h"
 #include <string>
 #include <sstream>
+#include "validationFormat.h"
+#include "Adresse.h"
 
 using namespace std;
 using namespace util;
@@ -37,7 +39,7 @@ Personne::Personne(
 	PRECONDITION(!(p_prenom.empty()));
 	PRECONDITION(!(p_nom.empty()));
 	PRECONDITION(Date::validerDate(p_dateNaissance.reqJour(),p_dateNaissance.reqMois(),p_dateNaissance.reqAnnee()));
-	PRECONDITION( p_adresse.verifieInvariant());
+
 
 	POSTCONDITION(m_nas == p_nas);
 	POSTCONDITION(m_prenom == p_prenom);
@@ -57,7 +59,6 @@ Personne::Personne(
  */
 
 void Personne::asgAdresse(const util::Adresse& p_adresse) {
-	PRECONDITION(p_adresse.verifieInvariant())
 	m_adresse=p_adresse;
 	POSTCONDITION(m_adresse == p_adresse);
 	INVARIANTS();
@@ -167,9 +168,8 @@ void Personne::verifieInvariant() const {
 	INVARIANT(util::validerNas(m_nas));
 	INVARIANT(!(m_prenom.empty()));
 	INVARIANT(!(m_nom.empty()));
-	INVARIANT(m_dateNaissance.reqAnnee()>=1970 && m_dateNaissance.reqAnnee()<=2037);
 	INVARIANT(Date::validerDate(m_dateNaissance.reqJour(),m_dateNaissance.reqMois(),m_dateNaissance.reqJourAnnee()));
-	INVARIANT(m_adresse.verifieInvariant());
+
 }
 
 } /* namespace elections */

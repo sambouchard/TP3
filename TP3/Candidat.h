@@ -29,6 +29,7 @@ public:
 	virtual Personne* clone() const;
 	virtual std::string reqPersonneFormate() const ;
 private:
+	void verifieInvariant() const;
 	int m_partipolitique;
 
 

@@ -8,16 +8,25 @@
 #ifndef CIRCONSCRIPTION_H_
 #define CIRCONSCRIPTION_H_
 #include <string>
+#include <vector>
+#include "Candidat.h"
+
 
 namespace elections {
 
 class Circonscription {
 public:
-	Circonscription(const std::string& p_nom, const elections::Candidat& p_depute);
-	virtual ~Circonscription();
+	Circonscription(const std::string& p_nom, const Candidat& p_depute);
+	~Circonscription();
+	std::string reqNom() const;
+	Candidat reqDeputeElu() const;
+	std::string reqCirconscriptionFormate() const;
+	void inscrire(const Personne& p_nouvelInscrit) ;
 private:
+	void verifieInvariant() const;
 	std::string m_nom;
-	elections::Candidat m_deputeElu;
+	std::vector<Personne*> m_vInscrits;
+	Candidat m_deputeElu;
 };
 
 } /* namespace elections */
