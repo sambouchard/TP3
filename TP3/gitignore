@@ -1,0 +1,8 @@
+# Les ligne commençant par '#' sont des commentaires.
+# Utilisation d'une étoile (*) comme joker. 
+
+# Tous les fichiers du répertoire «Debug» seront ignorés
+Debug/
+
+# Tous les fichiers du dossier ".metadata" seront ingorés
+.metadata
