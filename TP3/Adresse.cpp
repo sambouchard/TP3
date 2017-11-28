@@ -34,11 +34,11 @@ Adresse::Adresse(const std::string& p_nomrue,const std::string& p_ville,
 	PRECONDITION(!(p_province.empty()));
 
 
-	POSTCONDITION(m_codepostal == p_codepostal);
-	POSTCONDITION(m_nomrue == p_nomrue);
-	POSTCONDITION(m_ville == p_ville);
-	POSTCONDITION(m_numerorue == p_numerorue);
-	POSTCONDITION(m_province == p_province);
+	POSTCONDITION(reqCodePostal() == p_codepostal);
+	POSTCONDITION(reqNomRue() == p_nomrue);
+	POSTCONDITION(reqVille() == p_ville);
+	POSTCONDITION(reqNumeroRue() == p_numerorue);
+	POSTCONDITION(reqProvince() == p_province);
 	INVARIANTS();
 }
 

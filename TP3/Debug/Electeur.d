@@ -1,5 +1,5 @@
 Electeur.o: ../Electeur.cpp ../Electeur.h ../Personne.h ../Date.h \
- ../Adresse.h ../ContratException.h
+ ../ContratException.h ../Adresse.h
 
 ../Electeur.h:
 
@@ -7,6 +7,6 @@ Electeur.o: ../Electeur.cpp ../Electeur.h ../Personne.h ../Date.h \
 
 ../Date.h:
 
-../Adresse.h:
-
 ../ContratException.h:
+
+../Adresse.h:

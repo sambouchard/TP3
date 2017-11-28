@@ -46,13 +46,6 @@ std::string Circonscription::reqCirconscriptionFormate() const {
 		sortie<<m_vInscrits.at(i)->reqPersonneFormate();
 	}
 	return sortie.str();
-
-
-
-
-
-
-
 }
 
 void Circonscription::inscrire(const Personne& p_nouvelInscrit) {

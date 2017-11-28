@@ -1,12 +1,12 @@
-Principal.o: ../Principal.cpp ../Date.h ../Personne.h ../Adresse.h \
- ../ContratException.h ../validationFormat.h
+Principal.o: ../Principal.cpp ../Date.h ../ContratException.h \
+ ../Personne.h ../Adresse.h ../validationFormat.h
 
 ../Date.h:
+
+../ContratException.h:
 
 ../Personne.h:
 
 ../Adresse.h:
-
-../ContratException.h:
 
 ../validationFormat.h:

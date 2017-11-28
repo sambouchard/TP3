@@ -1,0 +1,1 @@
+PersonneTesteur.o: ../PersonneTesteur.cpp

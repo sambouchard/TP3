@@ -1,58 +1,75 @@
 /**
  * \file Date.cpp
  * \brief Implantation de la classe Date
- *        révision : normes 03-2013
+ *        rÃ©vision : normes 12-2013
  *        balises Doxygen
- *        révision des commentairs d'en-tête des méthodes
+ *        rÃ©vision des commentaires de spÃ©cification d'en-tÃªte des mÃ©thodes
  * \author Yves Roy Version initiale, THE
- * \date 10 octobre 2013
- * \version 3.2 sans contrat
+ * \date 28 octobre 2016
+ * \version 2.4
  */
-// dernière modification : 2014-02-06
 
 #include "Date.h"
 #include <sstream>
 #include <ctime>
-
+#include <iostream>
 static const long MAX_SECONDE = 2145848400;
 static const long JOUR_EN_SECONDES = 60 * 60 * 24;
-static const long MIN_SECONDE = 5 * 60 * 60; // 5 heure par rapport à Greenwich
+static const long MIN_SECONDE = 5 * 60 * 60; // 5 heure par rapport Ã  Greenwich
 
 using namespace std;
 namespace util
 {
 /**
- * \brief constructeur par défaut \n
- * La date prise par défaut est la date du système
+ * \brief constructeur par dÃ©faut \n
+ * La date prise par dÃ©faut est la date du systÃ¨me
  */
 Date::Date()
 {
 	m_temps = time(NULL);
 
 	struct tm* infoTempsP = localtime(&m_temps);
+	ASSERTION(infoTempsP != NULL);
 
 	asgDate(infoTempsP->tm_mday, infoTempsP->tm_mon + 1,
 			infoTempsP->tm_year + 1900);
+
+	INVARIANTS();
 }
 /**
- * \brief constructeur avec paramètres
- * 		  On construit un objet Date à partir de valeurs passées en paramètres.
- * \param[in] p_jour est un entier long qui représente le jour de la date
- * \param[in] p_mois est un entier long qui représente le mois de la date
- * \param[in] p_annee est un entier long qui représente l'année de la date
+ * \brief constructeur avec paramÃ¨tres
+ * 		  On construit un objet Date Ã  partir de valeurs passÃ©es en paramÃ¨tres.
+ * 		  Les attributs sont assignÃ©s seulement si la date est considÃ©rÃ©e comme valide.
+ * 		  Autrement, une erreur d'assertion est gÃ©nÃ©rÃ©e.
+ * \param[in] p_jour est un entier long qui reprÃ©sente le jour de la date
+ * \param[in] p_mois est un entier long qui reprÃ©sente le mois de la date
+ * \param[in] p_annee est un entier long qui reprÃ©sente l'annÃ©e de la date
+ * \pre p_jour, p_mois, p_annee doivent correspondre Ã  une date valide
+ * \post l'objet construit a Ã©tÃ© initialisÃ© Ã  partir des entiers passÃ©s en paramÃ¨tres
  */
 Date::Date(long p_jour, long p_mois, long p_annee)
 {
+	PRECONDITION (Date::validerDate(p_jour, p_mois, p_annee));
+
 	asgDate(p_jour, p_mois, p_annee);
+
+	POSTCONDITION (reqJour() == p_jour);
+	POSTCONDITION (reqMois() == p_mois);
+	POSTCONDITION (reqAnnee() == p_annee);
+	INVARIANTS();
 }
 /**
- * \brief Assigne une date à l'objet courant
- * \param[in] p_jour est un entier long qui représente le jour de la date
- * \param[in] p_mois est un entier long qui représente le mois de la date
- * \param[in] p_annee est un entier long qui représente l'année de la date
+ * \brief Assigne une date Ã  l'objet courant
+ * \param[in] p_jour est un entier long qui reprÃ©sente le jour de la date
+ * \param[in] p_mois est un entier long qui reprÃ©sente le mois de la date
+ * \param[in] p_annee est un entier long qui reprÃ©sente l'annÃ©e de la date
+ * \pre p_jour, p_mois, p_annee doivent correspondre Ã  une date valide
+ * \post l'objet a Ã©tÃ© assignÃ© Ã  partir des entiers passÃ©s en paramÃ¨tres
  */
 void Date::asgDate(long p_jour, long p_mois, long p_annee)
 {
+	PRECONDITION(Date::validerDate(p_jour, p_mois, p_annee));
+
 	struct tm infoTemps;
 
 	infoTemps.tm_year = (p_annee - 1900);
@@ -64,12 +81,16 @@ void Date::asgDate(long p_jour, long p_mois, long p_annee)
 	infoTemps.tm_isdst = -1;
 
 	m_temps = mktime(&infoTemps);
-}
 
+	POSTCONDITION(reqJour() == p_jour);
+	POSTCONDITION(reqMois() == p_mois);
+	POSTCONDITION(reqAnnee() == p_annee);
+	INVARIANTS();
+}
 /**
- * \brief Ajoute ou retire un certain nombre de jours à la date courante
- * \param p_nbJour est une entier long qui représente le nombre de jours à ajouter ou à soustraire s'il est négatif
- * \return un booléen qui indique si l'opération a réussi ou non
+ * \brief Ajoute ou retire un certain nombre de jours Ã  la date courante
+ * \param p_nbJour est une entier long qui reprÃ©sente le nombre de jours Ã  ajouter ou Ã  soustraire s'il est nÃ©gatif
+ * \return un boolÃ©en qui indique si l'opÃ©ration a rÃ©ussi ou non
  */
 bool Date::ajouteNbJour(long p_nbJour)
 {
@@ -85,48 +106,53 @@ bool Date::ajouteNbJour(long p_nbJour)
 		m_temps = m_temps + (p_nbJour * JOUR_EN_SECONDES);
 	}
 
+	INVARIANTS();
 	return bRet;
 }
 /**
  * \brief retourne le jour de la date
- * \return un entier long qui représente le jour de la date
+ * \return un entier long qui reprÃ©sente le jour de la date
  */
 long Date::reqJour() const
 {
 	struct tm* infoTempsP = localtime(&m_temps);
+	ASSERTION(infoTempsP != NULL);
 	return infoTempsP->tm_mday;
 }
 /**
  * \brief retourne le mois de la date
- * \return un entier long qui représente le mois de la date
+ * \return un entier long qui reprÃ©sente le mois de la date
  */
 long Date::reqMois() const
 {
 	struct tm* infoTempsP = localtime(&m_temps);
+	ASSERTION(infoTempsP != NULL);
 	return infoTempsP->tm_mon + 1;
 }
 /**
- * \brief retourne l'année de la date
- * \return un entier long qui représente l'année de la date
+ * \brief retourne l'annÃ©e de la date
+ * \return un entier long qui reprÃ©sente l'annÃ©e de la date
  */
 long Date::reqAnnee() const
 {
 	struct tm* infoTempsP = localtime(&m_temps);
+	ASSERTION(infoTempsP != NULL);
 	return infoTempsP->tm_year + 1900;
 }
 /**
- * \brief retourne le numéro correspondant au jour de la date
- * \return un entier long qui représente le numéro correspondant au jour de la date
+ * \brief retourne le iÃ¨me jour de l'annÃ©e correspondant au jour de la date
+ * \return un entier long qui reprÃ©sente le iÃ¨me jour de l'annÃ©e
  */
 long Date::reqJourAnnee() const
 {
 	struct tm* infoTempsP = localtime(&m_temps);
+	ASSERTION(infoTempsP != NULL);
 	return infoTempsP->tm_yday + 1;
 }
 /**
- * \brief Déterminer si une année est bissextile ou non
- * \param[in] p_annee un entier long qui repréente l'année à vérifier
- * \return estBissextile un booléen qui a la valeur true si l'année est bissextile et false sinon
+ * \brief DÃ©terminer si une annÃ©e est bissextile ou non
+ * \param[in] p_annee un entier long qui reprÃ©sente l'annÃ©e Ã  vÃ©rifier
+ * \return estBissextile un boolÃ©en qui a la valeur true si l'annÃ©e est bissextile et false sinon
  */
 bool Date::estBissextile(long p_annee)
 {
@@ -141,8 +167,8 @@ bool Date::estBissextile(long p_annee)
 	return estBissextile;
 }
 /**
- * \brief retourne le nom du jour de la semaine en français
- * \return une chaîne de caractères qui représente le nom du jour de la semaine en français
+ * \brief retourne le nom du jour de la semaine en franÃ§ais
+ * \return une chaÃ®ne de caractÃ¨res qui reprÃ©sente le nom du jour de la semaine en franÃ§ais
  */
 string Date::reqNomJourSemaine() const
 {
@@ -150,12 +176,13 @@ string Date::reqNomJourSemaine() const
 	{ "Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi" };
 
 	struct tm* infoTempsP = localtime(&m_temps);
+	ASSERTION(infoTempsP != NULL);//AssertionException si l'heure systÃ¨me n'a pas correctement Ã©tÃ© rÃ©cupÃ©rÃ©e
 	return JourSemaine[infoTempsP->tm_wday];
 
 }
 /**
- * \brief retourne le nom du mois en français
- * \return une chaîne de caractères qui représente le nom du mois en français
+ * \brief retourne le nom du mois en franÃ§ais
+ * \return une chaÃ®ne de caractÃ¨res qui reprÃ©sente le nom du mois en franÃ§ais
  */
 string Date::reqNomMois() const
 {
@@ -164,11 +191,12 @@ string Date::reqNomMois() const
 			"septembre", "octobre", "novembre", "decembre" };
 
 	struct tm* infoTempsP = localtime(&m_temps);
+	ASSERTION(infoTempsP != NULL);//AssertionException si l'heure systÃ¨me n'a pas correctement Ã©tÃ© rÃ©cupÃ©rÃ©e
 	return NomMois[infoTempsP->tm_mon];
 }
 /**
- * \brief retourne une date formatée dans une chaîne de caracères (string)
- * \return une date formatée dans une chaîne de caractères
+ * \brief retourne une date formatÃ©e dans une chaÃ®ne de caracÃ¨res (string)
+ * \return la date formatÃ©e dans une chaÃ®ne de caractÃ¨res
  */
  string Date::reqDateFormatee() const
 {
@@ -185,12 +213,13 @@ string Date::reqNomMois() const
 
 	return os.str();
 }
+
 /**
- * \brief Vérifie la validité d'une date
- * \param[in] p_jour un entier long représentant le jour de la date
- * \param[in] p_mois un entier long représentant  le mois de la date
- * \param[in] p_annee un entier long représentant l'année de la date
- * \return un booléen indiquant si la date est valide ou non
+ * \brief VÃ©rifie la validitÃ© d'une date
+ * \param[in] p_jour un entier long reprÃ©sentant le jour de la date
+ * \param[in] p_mois un entier long reprÃ©sentant  le mois de la date
+ * \param[in] p_annee un entier long reprÃ©sentant l'annÃ©e de la date
+ * \return un boolÃ©en indiquant si la date est valide ou non
  */
 bool Date::validerDate(long p_jour, long p_mois, long p_annee)
 {
@@ -214,39 +243,45 @@ bool Date::validerDate(long p_jour, long p_mois, long p_annee)
 	}
 	return valide;
 }
+
 /**
- * \brief surcharge de l'opérateur ==
- * \param[in] p_date qui est une date valide
- * \return un booléen indiquant si les deux dates sont égales ou pas
+ * \brief surcharge de l'opÃ©rateur ==
+ * \param[in] p_date Ã  comparer Ã  la date courante
+ * \return un boolÃ©en indiquant si les deux dates sont Ã©gales ou non
  */
 bool Date::operator==(const Date& p_date) const
 {
 	return m_temps == p_date.m_temps;
 }
+
 /**
- * \brief surcharge de l'opérateur <
- * \param[in] p_date qui est une date valide
- * \return un booléen indiquant si la date passée en paramètre est plus petite que la date courante
+ * \brief surcharge de l'opÃ©rateur <
+ * \param[in] p_date Ã  comparer Ã  la date courante
+ * \return un boolÃ©en indiquant si la date courante est plus petite que la date passÃ©e en paramÃ¨tre
  */
 bool Date::operator<(const Date& p_date) const
 {
 	return m_temps < p_date.m_temps;
 }
+
 /**
  * \brief retourne le nombre de jours entre deux dates
- * \param[in] p_date qui est une date valide
- * \return un entier qui représente le nombre de jours entre les deux dates
+ * \param[in] p_date Ã  soustraire Ã  la date courante
+ * \return un entier qui reprÃ©sente le nombre de jours entre la date courante
+ * 	et celle passÃ©e en paramÃ¨tre
  */
 int Date::operator-(const Date& p_date) const
 {
 	double nbSec = difftime(m_temps, p_date.m_temps);
 	return static_cast<int> (nbSec / JOUR_EN_SECONDES);
 }
+
 /**
- * \brief surcharge de la fonction << d'écriture dans une ostream
- * \param[in] p_os une stream vide dans laquelle on va écrire
- * \param[in] p_date qui est une date valide
- * \return la stream dans laquelle on a écrit la date
+ * \relates Date
+ * \brief surcharge de la fonction << d'Ã©criture dans un flux de sortie
+ * \param[in] p_os un flux de sortie  dans laquelle on va Ã©crire
+ * \param[in] p_date sortie dans le flux
+ * \return le flux dans lequel on a Ã©crit la date, ceci pour les appels en cascade
  */
  ostream& operator<<( ostream& p_os, const Date& p_date)
 {
@@ -268,4 +303,13 @@ int Date::operator-(const Date& p_date) const
 	return p_os;
 }
 
+/**
+ * \brief Teste l'invariant de la classe Date. L'invariant de cette classe s'assure que la date est valide
+ */
+void Date::verifieInvariant() const
+{
+	INVARIANT(m_temps >= MIN_SECONDE);
+	INVARIANT(m_temps <= MAX_SECONDE);
+	INVARIANT(Date::validerDate(reqJour(), reqMois(), reqAnnee()));
+}
 }// namespace util

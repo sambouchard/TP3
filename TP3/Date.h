@@ -1,33 +1,35 @@
 /**
  * \file Date.h
- * \brief Fichier qui contient l'interface de la classe Date qui sert au maintien et à la manipulation des dates.
+ * \brief Fichier qui contient l'interface de la classe Date qui sert au maintien et Ã  la manipulation des dates.
  * \author Yves Roy Version initiale, THE
- * \date 12 mars 2013
- * \version 3.1 sans contrat
+ * \date 28 octobre 2016
+ * \version 2.2
  */
-// dernière modification : 2014-02-06
-
 #ifndef DATE_H_
 #define DATE_H_
+#include "ContratException.h"
 #include <string>
 
 namespace util
 {
 /**
  * \class Date
- * \brief Cette classe sert au maintien et à la manipulation des dates.
+ * \brief Cette classe sert au maintien et Ã  la manipulation des dates.
  *
- *              Cette classe peut aussi servir à prendre la date courante du
- *              système et à faire des calculs avec des dates.
+ *             La classe maintient dans un Ã©tat cohÃ©rent ces renseignements.
+ *             Elle valide ce qu'on veut lui assigner.
  *              <p>
- *              Les limites de validité de cette date est du 1er janvier
- *              1970 au 31 décembre 2037.
+ *              Cette classe peut aussi servir Ã  prendre la date courante du
+ *              systÃ¨me et Ã  faire des calculs avec des dates.
  *              <p>
- *              La validité d'une date peut être vérifiée avec la méthode statique
- *              bool Date::verifierDate(jour, mois, annee).\n
- *             Attributs:   time_t m_temps   Nombre de secondes écoulé depuis le premier
- *                               			janvier 1970
+ *              La classe n'accepte que des dates valides, c'est la
+ *              responsabilitÃ© de l'utilisateur de la classe de s'en assurer.
+ *              <p>
+ *  Attributs:   time_t m_temps   Nombre de secondes Ã©coulÃ© depuis le premier janvier 1970 <p>
  * 				time_t m_temps pour long m_temps
+ * \invariant m_temps >= 1er janvier 1970 et >= au 31 dÃ©cembre 2037
+ * \invariant La validitÃ© peut Ãªtre vÃ©rifiÃ©e avec la mÃ©thode statique
+ *              bool Date::verifierDate(jour, mois, annee).
  */
 class Date
 {
@@ -53,10 +55,11 @@ public:
 	static bool validerDate(long p_jour, long p_mois, long p_annee);
 
 	friend std::ostream& operator<<(std::ostream& p_os, const Date& p_date);
+
 private:
 	std::string reqNomJourSemaine() const;
 	std::string reqNomMois() const;
-
+	void verifieInvariant() const;
 	time_t m_temps;
 };
 
