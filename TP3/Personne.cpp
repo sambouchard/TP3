@@ -30,8 +30,22 @@ Personne::Personne(
 		const std::string& p_prenom,
 		const std::string& p_nom,
 		const util::Date& p_dateNaissance,
-		const std::string& p_adresse):m_nas(p_nas),m_prenom(p_prenom),m_nom(p_nom),
+		const util::Adresse& p_adresse):m_nas(p_nas),m_prenom(p_prenom),m_nom(p_nom),
 				m_dateNaissance(p_dateNaissance),m_adresse(p_adresse){
+
+	PRECONDITION(util::validerNas(p_nas));
+	PRECONDITION(!(p_prenom.empty()));
+	PRECONDITION(!(p_nom.empty()));
+	PRECONDITION(Date::validerDate(p_dateNaissance.reqJour(),p_dateNaissance.reqMois(),p_dateNaissance.reqAnnee()));
+	PRECONDITION( p_adresse.verifieInvariant());
+
+	POSTCONDITION(m_nas == p_nas);
+	POSTCONDITION(m_prenom == p_prenom);
+	POSTCONDITION(m_nom == p_nom);
+	POSTCONDITION(m_dateNaissance == p_dateNaissance);
+	POSTCONDITION(m_adresse == p_adresse);
+	INVARIANTS();
+
 
 
 
@@ -42,8 +56,11 @@ Personne::Personne(
  *
  */
 
-void Personne::asgAdresse(const std::string& p_adresse) {
+void Personne::asgAdresse(const util::Adresse& p_adresse) {
+	PRECONDITION(p_adresse.verifieInvariant())
 	m_adresse=p_adresse;
+	POSTCONDITION(m_adresse == p_adresse);
+	INVARIANTS();
 
 }
 
@@ -91,13 +108,13 @@ util::Date Personne::reqDateNaissance() const {
  *\brief retourne les informations de la personnes formatees dans une chaine de caracteres
  *\return les informations de la personnes formatees dans une chaine de caracteres
 */
-std::string Personne::reqPersonneFormate() const {
+std::string Personne::reqPersonneFormate() const  {
 	ostringstream sortie;
 	sortie<<"NAS               : "<<reqNas()<<endl;
 	sortie<<"Prenom            : "<<reqPrenom()<<endl;
 	sortie<<"Nom               : "<<reqNom()<<endl;
 	sortie<<"Date de naissance : "<<m_dateNaissance.reqDateFormatee()<<endl;
-	sortie<<"Adresse           : "<<reqAdresse()<<endl;
+	sortie<<"Adresse           : "<<m_adresse.reqAdresseFormate()<<endl;
 	return sortie.str();
 
 
@@ -135,11 +152,24 @@ std::ostream& operator<<(std::ostream& p_os, const Personne& p_personne){
 	p_os<<p_personne.m_prenom<<endl;
 	p_os<<p_personne.m_nom<<endl;
 	p_os<<date_str<<endl;
-	p_os<<p_personne.m_adresse<<endl;
+	p_os<<p_personne.m_adresse.reqAdresseFormate()<<endl;
 
 
 
 	return p_os;
+}
+
+Personne::~Personne() {
+
+}
+
+void Personne::verifieInvariant() const {
+	INVARIANT(util::validerNas(m_nas));
+	INVARIANT(!(m_prenom.empty()));
+	INVARIANT(!(m_nom.empty()));
+	INVARIANT(m_dateNaissance.reqAnnee()>=1970 && m_dateNaissance.reqAnnee()<=2037);
+	INVARIANT(Date::validerDate(m_dateNaissance.reqJour(),m_dateNaissance.reqMois(),m_dateNaissance.reqJourAnnee()));
+	INVARIANT(m_adresse.verifieInvariant());
 }
 
 } /* namespace elections */

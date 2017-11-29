@@ -28,10 +28,10 @@ Adresse::Adresse(const std::string& p_nomrue,const std::string& p_ville,
 			m_nomrue(p_nomrue),m_numerorue(p_numerorue),m_province(p_province)
 {
 	PRECONDITION(p_numerorue > 0);
-	PRECONDITION(p_nomrue);
-	PRECONDITION(p_ville);
-	PRECONDITION(p_codepostal);
-	PRECONDITION(p_province);
+	PRECONDITION(!(p_nomrue.empty()));
+	PRECONDITION(!(p_ville.empty()));
+	PRECONDITION(!(p_codepostal.empty()));
+	PRECONDITION(!(p_province.empty()));
 
 
 	POSTCONDITION(m_codepostal == p_codepostal);
@@ -67,10 +67,10 @@ void Adresse::asgAdresse(const std::string& p_nomrue,
 		const std::string& p_province, int p_numerorue) {
 
 	PRECONDITION(p_numerorue > 0);
-	PRECONDITION(p_nomrue);
-	PRECONDITION(p_ville);
-	PRECONDITION(p_codepostal);
-	PRECONDITION(p_province);
+	PRECONDITION(!(p_nomrue.empty()));
+	PRECONDITION(!(p_ville.empty()));
+	PRECONDITION(!(p_codepostal.empty()));
+	PRECONDITION(!(p_province.empty()));
 
 	m_nomrue = p_nomrue;
 	m_numerorue = p_numerorue;
@@ -128,10 +128,10 @@ std::ostream& operator <<(std::ostream& p_os, const Adresse& p_adresse)
 
 void Adresse::verifieInvariant() const {
 	INVARIANT(m_numerorue>0);
-	INVARIANT(m_codepostal);
-	INVARIANT(m_nomrue);
-	INVARIANT(m_ville);
-	INVARIANT(m_province);
+	INVARIANT(!(m_codepostal.empty()));
+	INVARIANT(!(m_nomrue.empty()));
+	INVARIANT(!(m_ville .empty()));
+	INVARIANT(!(m_province.empty()));
 
 }
 

@@ -10,7 +10,7 @@
 #include <string>
 #include <iostream>
 #include "Date.h"
-#include "Personne.h"
+#include "ContratException.h"
 
 
 
@@ -51,9 +51,9 @@ public:
 	const std::string& p_prenom,
 	const std::string& p_nom,
 	const util::Date& p_dateNaissance,
-	const util::Adresse p_adresse);
+	const util::Adresse& p_adresse);
 
-	void asgAdresse(const std::string& p_adresse);
+	void asgAdresse(const util::Adresse& p_adresse);
 
 	std::string reqNom() const;
 	std::string reqNas() const;
@@ -61,17 +61,18 @@ public:
 	util::Adresse reqAdresse() const;
 	util::Date reqDateNaissance() const;
 
-	std::string reqPersonneFormate() const ;
+	virtual std::string reqPersonneFormate() const = 0;
+	virtual ~Personne();
 
 	bool operator==(const Personne& p_personne);
 	friend std::ostream& operator<<(std::ostream& p_os, const Personne& p_personne);
 
 private:
-
+	 void verifieInvariant() const;
 	 std::string m_nom;
 	 std::string m_nas;
 	 std::string m_prenom;
-     std::string m_adresse;
+     util::Adresse m_adresse;
 	 util::Date m_dateNaissance;
 
 

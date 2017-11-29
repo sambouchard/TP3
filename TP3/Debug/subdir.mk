@@ -6,7 +6,9 @@
 CPP_SRCS += \
 ../Adresse.cpp \
 ../Candidat.cpp \
+../ContratException.cpp \
 ../Date.cpp \
+../Electeur.cpp \
 ../Personne.cpp \
 ../Principal.cpp \
 ../validationFormat.cpp 
@@ -14,7 +16,9 @@ CPP_SRCS += \
 OBJS += \
 ./Adresse.o \
 ./Candidat.o \
+./ContratException.o \
 ./Date.o \
+./Electeur.o \
 ./Personne.o \
 ./Principal.o \
 ./validationFormat.o 
@@ -22,7 +26,9 @@ OBJS += \
 CPP_DEPS += \
 ./Adresse.d \
 ./Candidat.d \
+./ContratException.d \
 ./Date.d \
+./Electeur.d \
 ./Personne.d \
 ./Principal.d \
 ./validationFormat.d 

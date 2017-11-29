@@ -14,7 +14,10 @@
 enum PartisPolitiques {BLOC_QUEBECOIS, CONSERVATEUR, INDEPENDANT, LIBERAL,
 NOUVEAU_PARTI_DEMOCRATIQUE};
 
-class Candidat {
+namespace elections {
+
+
+class Candidat : public Personne{
 public:
 	Candidat(const std::string& p_nas,
 			const std::string& p_prenom,
@@ -23,14 +26,11 @@ public:
 			const util::Adresse& p_adresse,
 			int p_parti);
 private:
-	const std::string& p_nas;
-	const std::string& p_prenom;
-	const std::string& p_nom;
-	const util::Date& p_dateNaissance;
-	const util::Adresse& p_adresse;
 	int m_partipolitique;
 
 
 };
+
+} /* namespace elections */
 
 #endif /* CANDIDAT_H_ */

@@ -8,6 +8,9 @@
 #include "Candidat.h"
 #include <string>
 
+using namespace std;
+using namespace util;
+
 Candidat::Candidat(const std::string& p_nas,
 		const std::string& p_prenom,
 		const std::string& p_nom,
