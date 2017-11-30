@@ -25,6 +25,9 @@ public:
 			const util::Date& p_dateNaissance,
 			const util::Adresse& p_adresse,
 			int p_parti);
+	std::string reqPartiPolitiqueString() const;
+	virtual Personne* clone() const;
+	virtual std::string reqPersonneFormate() const ;
 private:
 	int m_partipolitique;
 

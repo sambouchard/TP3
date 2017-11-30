@@ -6,6 +6,7 @@
 CPP_SRCS += \
 ../Adresse.cpp \
 ../Candidat.cpp \
+../Circonscription.cpp \
 ../ContratException.cpp \
 ../Date.cpp \
 ../Electeur.cpp \
@@ -16,6 +17,7 @@ CPP_SRCS += \
 OBJS += \
 ./Adresse.o \
 ./Candidat.o \
+./Circonscription.o \
 ./ContratException.o \
 ./Date.o \
 ./Electeur.o \
@@ -26,6 +28,7 @@ OBJS += \
 CPP_DEPS += \
 ./Adresse.d \
 ./Candidat.d \
+./Circonscription.d \
 ./ContratException.d \
 ./Date.d \
 ./Electeur.d \

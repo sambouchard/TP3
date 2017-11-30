@@ -63,6 +63,7 @@ public:
 
 	virtual std::string reqPersonneFormate() const = 0;
 	virtual ~Personne();
+	virtual Personne* clone() const=0;
 
 	bool operator==(const Personne& p_personne);
 	friend std::ostream& operator<<(std::ostream& p_os, const Personne& p_personne);
